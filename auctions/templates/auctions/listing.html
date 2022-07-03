@@ -117,8 +117,7 @@
         {% for comment in comments %}
         <div class="row shadow p-3 mb-4 bg-body rounded border border-info">
             <div class="col d-flex flex-column">
-                <p class="bg-light"><strong>{{ comment.user.username }} </strong><span class="text-muted">commented on {{
-                        comment.commentDate }}:</span></p>
+                <p class="bg-light"><strong>{{ comment.user.username }} </strong><span class="text-muted">commented on {{ comment.commentDate }}:</span></p>
                 <p class="bg-info ps-3 text-white">{{ comment.comment }}</p>
             </div>
         </div>
