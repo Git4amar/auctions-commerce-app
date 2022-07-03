@@ -1,0 +1,13 @@
+{% extends "auctions/layout.html" %}
+
+{% block title %}
+    Error
+{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <img alt="{{ code }}" class="border img-fluid"
+        src="http://memegen.link/custom/{{ code | urlencode }}/{{ message | urlencode }}.jpg?alt=https://i.kym-cdn.com/entries/icons/original/000/000/554/picard-facepalm.jpg"
+        title="{{ code }}">
+    </div>
+{% endblock %}

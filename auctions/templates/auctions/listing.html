@@ -1,0 +1,128 @@
+{% extends "auctions/layout.html" %}
+
+{% block title %}
+    {{ listing.title }}
+{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="row mb-3 d-flex flex-row">
+            <h4 class="display-5">{{ listing.title }}</h4>
+            {% if user.is_authenticated %}
+            <form action="{% url 'listing' listing.id %}" method="post">
+                {% csrf_token %}
+                {% if not listing.usersWatching.all or user not in listing.usersWatching.all %}
+                <button class="btn btn-secondary btn-sm rounded-pill w-auto" type="submit" value="addWatch"
+                    name="watchlist">Add to Watchlist</button>
+                {% else %}
+                <button class="btn btn-secondary btn-sm rounded-pill w-auto" type="submit" value="removeWatch"
+                    name="watchlist">Remove from Watchlist</button>
+                {% endif %}
+            </form>
+            {% endif %}
+        </div>
+        <div class="row">
+            {% if listing.imageURL %}
+            <div class="col">
+                <img src="{{ listing.imageURL }}" alt="{{ listing.title }}" class="img-fluid" style="max-height: 50vh">
+            </div>
+            {% endif %}
+        </div>
+        {% if user.is_authenticated and user == listing.createdByUser %}
+        <form action="{% url 'listing' listing.id %}" method="post">
+            {% csrf_token %}
+            <div class="row my-2">
+                <div class="col d-flex justify-content-start align-items-end">
+                    {% if listing.listingStatus %}
+                    <span class="fs-5">Turn off switch to close listing</span>
+                    {% else %}
+                    <span class="fs-5">Turn on switch to open listing</span>
+                    {% endif %}
+                    <span class="form-check form-switch ms-2">{{ statusForm.listingStatus }}</span>
+                </div>
+            </div>
+        </form>
+        {% endif %}
+        <div class="row">
+            <div class="col d-flex flex-column">
+                <h4 class="mb-3">Description: <br><span class="fw-normal fs-5">{{ listing.description }}</span></h4>
+                {% load customFilters %}
+                {% if listing.listingMaxBid is None %}
+                <h4 class="mb-1">Starting Bid: <span class="fw-normal">{{ listing.startingBid|USD }}</span></h4>
+                {% else %}
+                <h4 class="mb-1">Current Price: <span class="fw-normal">{{ listing.listingMaxBid|USD }}</span></h4>
+                {% endif %}
+                <span class="text-muted mb-3">
+                    {{ listing.listingBids.count }} bid(s) so far.
+                    {% for bid in listing.listingBids.all %}
+                    {% if bid.bid == listing.listingMaxBid and bid.user.id == user.id %}
+                    {% if listing.listingStatus %}
+                    <strong class="text-info">Your bid is the current bid.</strong>
+                    {% else %}
+                    <strong class="text-success">You have won this auction listing.</strong>
+                    {% endif %}
+                    {% endif %}
+                    {% endfor %}
+                </span>
+            </div>
+        </div>
+        {% if user.is_authenticated and listing.listingStatus %}
+        <form action="{% url 'listing' listing.id %}" method="post">
+            {% csrf_token %}
+            <div class="row mb-3">
+                <div class="col">
+                    {{ bidForm.bid }}
+                </div>
+                <div class="col">
+                    <button class="btn btn-primary w-auto" type="submit" value="placeBid" name="placeBid">Place Bid</button>
+                </div>
+            </div>
+        </form>
+        {% endif %}
+        <div class="row">
+            <div class="col">
+                <h4>Details</h4>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <ul class="bg-light">
+                    <li>Listed by: {{ listing.createdByUser.username }}</li>
+                    <li>Category: {{ listing.category }}</li>
+                    <li>Created: {{ listing.createDate }}</li>
+                </ul>
+            </div>
+        </div>
+        {% if user.is_authenticated and listing.listingStatus %}
+        <form action="{% url 'listing' listing.id %}" method="post">
+            {% csrf_token %}
+            <div class="row">
+                <div class="col">
+                    {{ commentForm.comment }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col d-flex justify-content-end">
+                    <button type="submit" class="btn btn-primary">Comment</button>
+                </div>
+            </div>
+        </form>
+        {% endif %}
+        {% if comments %}
+        <div class="row">
+            <div class="col">
+                <h4>Comments</h4>
+            </div>
+        </div>
+        {% for comment in comments %}
+        <div class="row shadow p-3 mb-4 bg-body rounded border border-info">
+            <div class="col d-flex flex-column">
+                <p class="bg-light"><strong>{{ comment.user.username }} </strong><span class="text-muted">commented on {{
+                        comment.commentDate }}:</span></p>
+                <p class="bg-info ps-3 text-white">{{ comment.comment }}</p>
+            </div>
+        </div>
+        {% endfor %}
+        {% endif %}
+    </div>
+{% endblock %}

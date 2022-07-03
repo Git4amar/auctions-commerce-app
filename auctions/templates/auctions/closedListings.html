@@ -1,18 +1,18 @@
 {% extends "auctions/layout.html" %}
 
 {% block title %}
-    Active Listings
+    Closed Listings
 {% endblock %}
 
 {% block body %}
     <div class="container">
         <div class="row">
             <div class="col d-flex justify-content-center">
-                <h2 class="display-4 text-decoration-underline">Active Listings</h2>
+                <h2 class="display-4 text-decoration-underline">Closed Listings</h2>
             </div>
         </div>
         {% for listing in listings %}
-        {% if listing.listingStatus %}
+        {% if not listing.listingStatus %}
         <div class="container-fluid my-5 eachListing shadow-lg p-3 mb-5 bg-body rounded" style="transform: rotate(0);">
             <div class="row">
                 <div class="col d-flex justify-content-center">

@@ -1,0 +1,26 @@
+{% extends "auctions/layout.html" %}
+
+{% block title %}
+    Create Listing
+{% endblock %}
+
+{% block body %}
+    <div class="container pt-5">
+        <div class="row">
+            <div class="col d-flex justify-content-center flex-column">
+                <h4 class="display-4 text-decoration-underline">Create New Auction Listing</h4>
+                <form action="{% url 'createListing' %}" method="post">
+                    {% csrf_token %}
+                    <table class="table table-borderless align-middle mt-2">
+                        {{ form.as_table }}
+                    </table>
+                    <div class="row">
+                        <div class="col d-flex justify-content-end">
+                            <button type="submit" class="btn btn-primary">Create Listing</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}
