@@ -12,10 +12,10 @@
             <form action="{% url 'listing' listing.id %}" method="post">
                 {% csrf_token %}
                 {% if not listing.usersWatching.all or user not in listing.usersWatching.all %}
-                <button class="btn btn-secondary btn-sm rounded-pill w-auto" type="submit" value="addWatch"
+                <button class="btn btn-info btn-sm rounded-pill w-auto" type="submit" value="addWatch"
                     name="watchlist">Add to Watchlist</button>
                 {% else %}
-                <button class="btn btn-secondary btn-sm rounded-pill w-auto" type="submit" value="removeWatch"
+                <button class="btn btn-info btn-sm rounded-pill w-auto" type="submit" value="removeWatch"
                     name="watchlist">Remove from Watchlist</button>
                 {% endif %}
             </form>
@@ -32,20 +32,23 @@
         <form action="{% url 'listing' listing.id %}" method="post">
             {% csrf_token %}
             <div class="row my-2">
-                <div class="col d-flex justify-content-start align-items-end">
+                <div class="col d-flex justify-content-start align-items-center">
                     {% if listing.listingStatus %}
-                    <span class="fs-5">Turn off switch to close listing</span>
+                    <span class="fs-3">Turn off switch to close listing</span>
                     {% else %}
-                    <span class="fs-5">Turn on switch to open listing</span>
+                    <span class="fs-3">Turn on switch to open listing</span>
                     {% endif %}
                     <span class="form-check form-switch ms-2">{{ statusForm.listingStatus }}</span>
                 </div>
             </div>
         </form>
         {% endif %}
-        <div class="row">
+        <div class="row mt-2">
             <div class="col d-flex flex-column">
-                <h4 class="mb-3">Description: <br><span class="fw-normal fs-5">{{ listing.description }}</span></h4>
+                {% if listing.description %}
+                <h4>Description:</h4>
+                <span class="fw-normal mb-3">{{ listing.description }}</span></h4>
+                {% endif %}
                 {% load customFilters %}
                 {% if listing.listingMaxBid is None %}
                 <h4 class="mb-1">Starting Bid: <span class="fw-normal">{{ listing.startingBid|USD }}</span></h4>
@@ -57,9 +60,9 @@
                     {% for bid in listing.listingBids.all %}
                     {% if bid.bid == listing.listingMaxBid and bid.user.id == user.id %}
                     {% if listing.listingStatus %}
-                    <strong class="text-info">Your bid is the current bid.</strong>
+                    <strong class="text-info fw-bold">Your bid is the current bid.</strong>
                     {% else %}
-                    <strong class="text-success">You have won this auction listing.</strong>
+                    <strong class="text-success fw-bold">You have won this auction listing.</strong>
                     {% endif %}
                     {% endif %}
                     {% endfor %}
@@ -101,7 +104,7 @@
                     {{ commentForm.comment }}
                 </div>
             </div>
-            <div class="row">
+            <div class="row pb-3">
                 <div class="col d-flex justify-content-end">
                     <button type="submit" class="btn btn-primary">Comment</button>
                 </div>
@@ -109,9 +112,9 @@
         </form>
         {% endif %}
         {% if comments %}
-        <div class="row">
+        <div class="row mt-4">
             <div class="col">
-                <h4>Comments</h4>
+                <h4>Comments<span class="badge bg-info badge-pill text-bg-info ms-1">{{ comments|length }}</span></h4>
             </div>
         </div>
         {% for comment in comments %}

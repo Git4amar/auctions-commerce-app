@@ -4,6 +4,10 @@
     {{ category }}
 {% endblock %}
 
+{% block categoriesTab %}
+    active
+{% endblock %}
+
 {% block body %}
     <div class="row">
         <div class="col d-flex justify-content-center">
@@ -22,7 +26,6 @@
                             <small class="text-muted">{{ listing.createDate }}</small>
                         </div>
                         <p class="mb-1">{{ listing }}</p>
-                        <small>Description: {{ listing.description }}</small>
                     </a>
                 </div>
             </div>

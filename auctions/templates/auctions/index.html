@@ -4,6 +4,10 @@
     Active Listings
 {% endblock %}
 
+{% block activeTab %}
+    active
+{% endblock %}
+
 {% block body %}
     <div class="container">
         <div class="row">
@@ -26,12 +30,15 @@
                 </div>
                 {% endif %}
                 <div class="col d-flex flex-column text-center justify-content-center">
-                    <h5 class="mb-3">Description: <br><span class="fw-normal">{{ listing.description }}</span></h5>
+                    {% if listing.description %}
+                    <h5>Description:</h5>
+                    <span class="fw-normal mb-3">{{ listing.description }}</span>
+                    {% endif %}
                     {% load customFilters %}
                     {% if listing.listingMaxBid is None %}
-                        <h5 class="mb-5">Starting Price: <span class="fw-normal">{{ listing.startingBid|USD }}</span></h5>
+                        <h5 class="mb-5">Starting Price: <span class="fw-bold">{{ listing.startingBid|USD }}</span></h5>
                     {% else %}
-                        <h5 class="mb-5">Current Price: <span class="fw-normal">{{ listing.listingMaxBid|USD }}</span></h5>
+                        <h5 class="mb-5">Current Price: <span class="fw-bold">{{ listing.listingMaxBid|USD }}</span></h5>
                     {% endif %}
                     <span class="text-muted">Created: {{ listing.createDate }}</span>
                 </div>
