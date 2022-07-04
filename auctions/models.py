@@ -16,13 +16,13 @@ class User(AbstractUser):
 
 class auctionListings(models.Model):
     title = models.CharField(max_length=64, verbose_name="Title")
-    description = models.TextField(verbose_name="Description")
+    description = models.TextField(verbose_name="Description", blank=True)
     startingBid = models.DecimalField(max_digits=19, decimal_places=2, validators=[MinValueValidator(limit_value=0)], verbose_name="Starting Bid")
     imageURL = models.URLField(blank=True, verbose_name="Image URL")
     category = models.CharField(max_length=64, blank=True, verbose_name="Category", default="No Category Listed")
     createdByUser = models.ForeignKey(User, on_delete=models.CASCADE, related_name="userAuctionListings")
     createDate = models.DateTimeField(auto_now_add=True)
-    usersWatching = models.ManyToManyField(User, related_name="userWatch")
+    usersWatching = models.ManyToManyField(User, related_name="userWatch", blank=True)
     listingMaxBid = models.DecimalField(max_digits=19, decimal_places=2, validators=[MinValueValidator(limit_value=0)], verbose_name="Current Bid", null=True, blank=True)
     listingStatus = models.BooleanField(default=True)
 
