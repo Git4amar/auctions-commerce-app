@@ -1,3 +1,4 @@
+from email.policy import default
 from django.contrib.auth import authenticate, login, logout, get_user
 from django.db import IntegrityError
 from django.http import HttpResponseRedirect
@@ -53,9 +54,7 @@ def login_view(request):
             return HttpResponseRedirect(reverse("index"))
         else:
             messages.error(request, 'Invalid username and/or password.')
-            return render(request, "auctions/login.html", {
-                "message": "Invalid username and/or password."
-            })
+            return render(request, "auctions/login.html")
     else:
         return render(request, "auctions/login.html")
 
@@ -75,9 +74,7 @@ def register(request):
         confirmation = request.POST["confirmation"]
         if password != confirmation:
             messages.error(request, 'Passwords must match.')
-            return render(request, "auctions/register.html", {
-                "message": "Passwords must match."
-            })
+            return render(request, "auctions/register.html")
 
         # Attempt to create new user
         try:
@@ -85,9 +82,7 @@ def register(request):
             user.save()
         except IntegrityError:
             messages.error(request, 'Username already taken.')
-            return render(request, "auctions/register.html", {
-                "message": "Username already taken."
-            })
+            return render(request, "auctions/register.html")
         login(request, user)
         return HttpResponseRedirect(reverse("index"))
     else:
@@ -98,7 +93,7 @@ def register(request):
 def createListing(request):
     if request.method == "GET":
         return render(request, "auctions/createListing.html", {
-            "form": createListingForm()
+            "form": createListingForm(initial={'category': None})
         })
     else:
         createForm = createListingForm(request.POST)
@@ -147,13 +142,13 @@ def listing(request, listingID):
                 userNewBid = float(request.POST.get('bid'))
                 if listing.listingMaxBid:
                     if not userNewBid > listing.listingMaxBid:
-                        messages.info(request, 'Bid unsuccessful')
+                        messages.error(request, 'Bid unsuccessful')
                         return render(request, "auctions/error.html", {
                             "message": "Bid must greater than current price", "code": "406"
                         })
                 else:
                     if userNewBid < listing.startingBid:
-                        messages.info(request, 'Bid unsuccessful')
+                        messages.error(request, 'Bid unsuccessful')
                         return render(request, "auctions/error.html", {
                             "message": "Bid must be at least starting bid", "code": "406"
                         })
