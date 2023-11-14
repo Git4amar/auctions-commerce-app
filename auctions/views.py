@@ -1,4 +1,3 @@
-from email.policy import default
 from django.contrib.auth import authenticate, login, logout, get_user
 from django.db import IntegrityError
 from django.http import HttpResponseRedirect
@@ -162,7 +161,7 @@ def listing(request, listingID):
                 messages.success(request, 'Bid placed successfully')
                 return HttpResponseRedirect(reverse("listing", kwargs={'listingID' : listing.id}))
             
-            # execute and save comment actions
+            # execute and save comments
             if request.POST.get('comment'):
                 newComment = commentForm(request.POST).save(commit=False)
                 newComment.listing = listing

@@ -2,7 +2,7 @@ from django.contrib import admin
 from .models import *
 
 class ListingsAdmin(admin.ModelAdmin):
-    list_display = ("title", "startingBid", "listingMaxBid")
+    list_display = ("title", "startingBid", "listingMaxBid", "category")
 
 class BidAdmin(admin.ModelAdmin):
     list_display = ("listing", "bid")
