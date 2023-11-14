@@ -1,5 +1,5 @@
 # Auctions (A Full Stack Commerce Application)
-### Developer: Amarpreet Singh Bir, California, USA
+### Developer: Amarpreet S. Bir, California, USA
 ### Video Demo:  [Auctions (length - 4:43)](https://youtu.be/HarK5nold6U)
 ### Technology Stack:
 - Python3
@@ -12,8 +12,8 @@
 ### Demo Setup Instructions:
 Note: A small SQLite3 demo database has been intialized for demo purposes
 1.  **Required**: [Download and Install](https://www.python.org/downloads/) Python 3.10 or up 
-2.  [Git clone](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository) the repository to your local machine by following the instructions
-3. Change directory into the project folder with the following structure
+2.  [Git clone](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository) the repository to your local machine
+3. Change directory (cd) into the project folder with the following structure
     ```
     ├── README.md
     ├── auctions
